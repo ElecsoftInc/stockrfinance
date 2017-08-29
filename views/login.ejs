@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login ~ Stockr Finance</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
+  </head>
+  <body>
+
+    <nav class="navbar ">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <strong>Stockr</strong>
+        </a>
+
+
+        <div class="navbar-burger burger" data-target="navMenuTransparentExample">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div id="navMenuTransparentExample" class="navbar-menu">
+        <div class="navbar-start">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link  is-active" href="/documentation/overview/start/">
+              Trending
+            </a>
+            <div class="navbar-dropdown is-boxed">
+              <a class="navbar-item " href="/documentation/overview/start/">
+                Overview
+              </a>
+              <a class="navbar-item " href="http://bulma.io/documentation/modifiers/syntax/">
+                Modifiers
+              </a>
+              <a class="navbar-item " href="http://bulma.io/documentation/grid/columns/">
+                Grid
+              </a>
+              <a class="navbar-item " href="http://bulma.io/documentation/layout/container/">
+                Layout
+              </a>
+              <a class="navbar-item " href="http://bulma.io/documentation/form/general/">
+                Form
+              </a>
+              <a class="navbar-item " href="http://bulma.io/documentation/elements/box/">
+                Elements
+              </a>
+
+                <a class="navbar-item is-active" href="http://bulma.io/documentation/components/breadcrumb/">
+                  Components
+                </a>
+
+              <hr class="navbar-divider">
+              <div class="navbar-item">
+                <div>
+                  <p class="is-size-6-desktop">
+                    <strong class="has-text-info">0.5.0</strong>
+                  </p>
+
+                    <small>
+                      <a class="view-all-versions" href="/versions">View all versions</a>
+                    </small>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="navbar-end">
+          <a class="navbar-item is-hidden-desktop-only" href="/blog">
+            Blog
+          </a>
+          <div class="navbar-item">
+            <div class="field is-grouped">
+              <p class="control">
+                <a href="/signup" class="tw-button button">Sign Up</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title">
+          Login to start reading and writing articles.
+        </h1>
+        <p class="subtitle">
+          Not signed up? Sign up <a href="/signup">here.</a>
+        </p>
+      </div>
+    </section>
+
+
+    <div class="columns is-mobile is-centered">
+      <div class="column is-one-quarter is-narrow">
+        <form method="post" action="/loggingIn">
+          <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" type="email" placeholder="Email" name="email" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-envelope"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="Password" name="password" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-lock"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field is-grouped is-grouped-right">
+            <p class="control">
+              <input class="button is-primary" type="submit">
+              </input>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <p>
+            <strong>Stockr</strong> Finance by <a href="http://elecsoftconsulting.com">ElecSoft Consulting.</a>
+          </p>
+          <p>
+            <a class="icon" href="https://github.com/jgthms/bulma">
+              <i class="fa fa-github"></i>
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>

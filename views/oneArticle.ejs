@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <title>Stockr Finance ~ Home Page</title>
-
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= response2[0].title %> ~ Stockr Finance</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css">
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/scripts/comments.js"></script>
   </head>
-
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-<!--     <script src='./node_modules/free-text/src/index.js'></script> -->
-<!--     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.5/typed.min.js"></script> -->
-    <link href="https://fonts.googleapis.com/css?family=Rajdhani:400" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.bootcss.com/typed.js/1.1.4/typed.min.js"></script>
-  </head>
-
   <body>
 
     <nav class="navbar ">
@@ -50,8 +47,8 @@
               Trending
             </a>
             <div class="navbar-dropdown is-boxed">
-              <a class="navbar-item " href="/theNextWeb">
-                The Next Web
+              <a class="navbar-item " href="/documentation/overview/start/">
+                Overview
               </a>
               <a class="navbar-item " href="http://bulma.io/documentation/modifiers/syntax/">
                 Modifiers
@@ -126,46 +123,100 @@
       </div>
     </nav>
 
-    <section class="hero banner is-large">
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title">
+          <%= response2[0].title %>
+        </h1>
+        <p class="subtitle">
+          by <%= response2[0].full_name %>
+        </p>
+      </div>
+    </section>
+
+
+    <section class="hero is-large" style="background-image: url(<%= image_url %>); background-repeat: no-repeat; background-size: cover;">
       <div class="hero-body">
-        <div class="container">
-          <h1 class="title" style="font-family: 'Rajdhani', sans-serif;">
-            <strong id="typed-strings"></strong>
-          </h1>
-        </div>
+
       </div>
     </section>
 
     <br />
+    <br />
 
-    <section class="section">
-      <h1 class="title column is-offset-one-quarter-desktop" id="topStories">Today's top stories</h1>
+    <div class="columns is-centered is-mobile">
+      <div class="column is-7-desktop is-10-mobile is-12-tablet">
+        <div>
+          <p class="subtitle">
+          <%= response2[0].content %>
+          </p>
+        </div>
+      </div>
+    </div>
 
-      <% if (response2 == null) { %>
-        <% for (var i = 0; i < response2.length; i++) { %>
-          <div class="column">
-            <div class="column is-three-quarters-desktop is-7-mobile">
-              <a href="/article/<%=response2[i].posts_id%>">
-                <section class="hero is-primary is-medium" style="background-image: url('<%= response2[i].image_url %>'); background-repeat: no-repeat; background-size: cover;">
-                  <div class="hero-body">
-                    <div class="container">
-                      <h1 class="title">
-                        <%= response2[i].title %>
-                      </h1>
-                      <h2 class="subtitle">
-                        <%= response2[i].title %>
-                      </h2>
-                    </div>
-                  </div>
-                </section>
-              </a>
-            </div>
+    <div class="columns is-right is-mobile">
+      <div class="column is-4 is-offset-8">
+      <p class="subtitle"></p>
+      </div>
+    </div>
+
+    <hr style="margin-left: 15%; margin-right: 15%;">
+
+    <div class="columns is-mobile is-centered">
+      <div class="column is-7-desktop is-10-mobile is-12-tablet">
+        <article class="media">
+          <div class="media-content">
+            <form id="postComment">
+              <div class="field">
+                <p class="control">
+                  <textarea class="textarea" id="textarea" placeholder="Add a comment..." required></textarea>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control">
+                  <input class="button is-primary" type="submit"></input>
+                </p>
+              </div>
+            </form>
           </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="columns is-mobile is-centered">
+      <div class="column is-7-desktop is-10-mobile is-12-tablet" id="commentGoesHere">
+        <% if (response2[0].comment_id) {%>
+          <% for (var i = 0; i < response2.length; i++) { %>
+            <article class="media">
+              <div class="media-content">
+                <div class="content">
+                  <p>
+                    <% if (response2[i].commenter_id) { %>
+                      <strong id="commenterName"><%= response2[i].commenter_name %></strong>
+                    <% } else { %>
+                      <strong id="commenterName">Anonymous</strong>
+                    <% } %>
+                    <br id="commentText">
+                    <%= response2[i].description %>
+                    <br>
+                    <small id="commentTime"><%= response2[i].date_created.toDateString() %></small>
+                  </p>
+                </div>
+              </div>
+            </article>
+          <% } %>
+        <% } else {%>
+
         <% } %>
-      <%} else {%>
-        <h1 class="title column" id="noStories">No Stories trending right now. <a href="/login">Login</a> or <a href="/signup">Sign Up</a> and start writing one now!</h1>
-      <% } %>
-    </section>
+      </div>
+    </div>
+
+
+    <br />
+    <br />
+    <br />
+
 
     <footer class="footer">
       <div class="container">

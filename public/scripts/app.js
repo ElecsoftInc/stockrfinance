@@ -1,10 +1,10 @@
+// const Typed = require('typed.js');
+
 $(() => {
-  $.ajax({
-    method: "GET",
-    url: "/api/users"
-  }).done((users) => {
-    for(user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-    }
-  });;
+  $("#typed-strings").typed({
+      strings: ["Finance...", 'News...', 'Blog...', 'Stockr...'],
+      typeSpeed: 100
+      //showCursor: false
+      // loop: false
+  });
 });

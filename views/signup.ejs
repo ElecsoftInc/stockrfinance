@@ -1,21 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <title>Stockr Finance ~ Home Page</title>
-
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Signup ~ Stockr Finance</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
   </head>
-
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-<!--     <script src='./node_modules/free-text/src/index.js'></script> -->
-<!--     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.5/typed.min.js"></script> -->
-    <link href="https://fonts.googleapis.com/css?family=Rajdhani:400" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.bootcss.com/typed.js/1.1.4/typed.min.js"></script>
-  </head>
-
   <body>
 
     <nav class="navbar ">
@@ -24,7 +15,7 @@
           <strong>Stockr</strong>
         </a>
 
-        <a class="navbar-item is-hidden-desktop" href="https://github.com/jgthms/bulma">
+        <a class="navbar-item is-hidden-desktop" href="https://github.com/jgthms/bulma" target="_blank">
           <span class="icon" style="color: #333;">
             <i class="fa fa-github"></i>
           </span>
@@ -50,8 +41,8 @@
               Trending
             </a>
             <div class="navbar-dropdown is-boxed">
-              <a class="navbar-item " href="/theNextWeb">
-                The Next Web
+              <a class="navbar-item " href="/documentation/overview/start/">
+                Overview
               </a>
               <a class="navbar-item " href="http://bulma.io/documentation/modifiers/syntax/">
                 Modifiers
@@ -94,78 +85,78 @@
           <a class="navbar-item is-hidden-desktop-only" href="/blog">
             Blog
           </a>
-          <% if (!name) { %>
-            <div class="navbar-item">
-              <div class="field is-grouped">
-                <p class="control">
-                  <a href="/login" class="tw-button button">Login</a>
-                </p>
-              </div>
+          <div class="navbar-item">
+            <div class="field is-grouped">
+              <p class="control">
+                <a href="/login" class="tw-button button">Login</a>
+              </p>
             </div>
-            <div class="navbar-item">
-              <div class="field is-grouped">
-                <p class="control">
-                  <a href="/signup" class="tw-button button">Sign Up</a>
-                </p>
-              </div>
-            </div>
-          <% } else { %>
-            <a href="/write" class="navbar-item">Write</a>
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link  is-active">
-                <%= name %>
-              </a>
-              <div class="navbar-dropdown is-boxed">
-                <a class="navbar-item " href="/logout">
-                  Logout
-                </a>
-              </div>
-            </div>
-          <% } %>
+          </div>
         </div>
       </div>
     </nav>
 
-    <section class="hero banner is-large">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title" style="font-family: 'Rajdhani', sans-serif;">
-            <strong id="typed-strings"></strong>
-          </h1>
-        </div>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">
+          Sign up here to start reading and writing articles.
+        </h1>
+        <p class="subtitle">
+          Already a part of the <strong>Stockr</strong> Finance community? Log in <a href="/login">here.</a>
+        </p>
       </div>
     </section>
 
-    <br />
-
-    <section class="section">
-      <h1 class="title column is-offset-one-quarter-desktop" id="topStories">Today's top stories</h1>
-
-      <% if (response2 == null) { %>
-        <% for (var i = 0; i < response2.length; i++) { %>
-          <div class="column">
-            <div class="column is-three-quarters-desktop is-7-mobile">
-              <a href="/article/<%=response2[i].posts_id%>">
-                <section class="hero is-primary is-medium" style="background-image: url('<%= response2[i].image_url %>'); background-repeat: no-repeat; background-size: cover;">
-                  <div class="hero-body">
-                    <div class="container">
-                      <h1 class="title">
-                        <%= response2[i].title %>
-                      </h1>
-                      <h2 class="subtitle">
-                        <%= response2[i].title %>
-                      </h2>
-                    </div>
-                  </div>
-                </section>
-              </a>
+    <div class="columns is-mobile is-centered">
+      <div class="column is-one-quarter-desktop is-two-thirds-mobile is-two-thirds-tablet is-narrow">
+        <form method="post" action="/signingUp">
+          <div class="field">
+            <div class="control has-icons-left">
+              <input class="input" type="text" placeholder="Full Name" name="personName" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-user"></i>
+              </span>
             </div>
           </div>
-        <% } %>
-      <%} else {%>
-        <h1 class="title column" id="noStories">No Stories trending right now. <a href="/login">Login</a> or <a href="/signup">Sign Up</a> and start writing one now!</h1>
-      <% } %>
-    </section>
+          <div class="field">
+            <div class="control has-icons-left">
+              <input class="input" type="text" placeholder="Tell us about yourself..." name="bio" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-briefcase"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" type="email" placeholder="Email" name="email" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-envelope"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="Password" name="password" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-lock"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field is-grouped is-grouped-right">
+            <p class="control">
+              <input class="button is-primary" type="submit">
+              </input>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
     <footer class="footer">
       <div class="container">
