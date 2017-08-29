@@ -46,46 +46,19 @@
       <div id="navMenuTransparentExample" class="navbar-menu">
         <div class="navbar-start">
           <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link  is-active" href="/documentation/overview/start/">
+            <a class="navbar-link is-active">
               Trending
             </a>
             <div class="navbar-dropdown is-boxed">
-              <a class="navbar-item " href="/theNextWeb">
-                The Next Web
+              <a class="navbar-item " href="/wsj">
+                The WSJ
               </a>
-              <a class="navbar-item " href="http://bulma.io/documentation/modifiers/syntax/">
-                Modifiers
+              <a class="navbar-item " href="/businessInsider">
+                Business Insider
               </a>
-              <a class="navbar-item " href="http://bulma.io/documentation/grid/columns/">
-                Grid
+              <a class="navbar-item " href="/economist">
+                The Economist
               </a>
-              <a class="navbar-item " href="http://bulma.io/documentation/layout/container/">
-                Layout
-              </a>
-              <a class="navbar-item " href="http://bulma.io/documentation/form/general/">
-                Form
-              </a>
-              <a class="navbar-item " href="http://bulma.io/documentation/elements/box/">
-                Elements
-              </a>
-
-                <a class="navbar-item is-active" href="http://bulma.io/documentation/components/breadcrumb/">
-                  Components
-                </a>
-
-              <hr class="navbar-divider">
-              <div class="navbar-item">
-                <div>
-                  <p class="is-size-6-desktop">
-                    <strong class="has-text-info">0.5.0</strong>
-                  </p>
-
-                    <small>
-                      <a class="view-all-versions" href="/versions">View all versions</a>
-                    </small>
-
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -141,7 +114,7 @@
     <section class="section">
       <h1 class="title column is-offset-one-quarter-desktop" id="topStories">Today's top stories</h1>
 
-      <% if (response2 == null) { %>
+      <% if (response2[0]) { %>
         <% for (var i = 0; i < response2.length; i++) { %>
           <div class="column">
             <div class="column is-three-quarters-desktop is-7-mobile">
@@ -153,7 +126,7 @@
                         <%= response2[i].title %>
                       </h1>
                       <h2 class="subtitle">
-                        <%= response2[i].title %>
+                        <%= response2[i].content %>
                       </h2>
                     </div>
                   </div>
@@ -162,7 +135,7 @@
             </div>
           </div>
         <% } %>
-      <%} else {%>
+      <%} else if (response2){%>
         <h1 class="title column" id="noStories">No Stories trending right now. <a href="/login">Login</a> or <a href="/signup">Sign Up</a> and start writing one now!</h1>
       <% } %>
     </section>
@@ -172,11 +145,6 @@
         <div class="content has-text-centered">
           <p>
             <strong>Stockr</strong> Finance by <a href="http://elecsoftconsulting.com">ElecSoft Consulting.</a>
-          </p>
-          <p>
-            <a class="icon" href="https://github.com/jgthms/bulma">
-              <i class="fa fa-github"></i>
-            </a>
           </p>
         </div>
       </div>

@@ -3,15 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><%= response2[0].title %> ~ Stockr Finance</title>
+    <title>Hello Bulma!</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css">
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.min.js"
-      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous">
-    </script>
-    <script type="text/javascript" src="/scripts/comments.js"></script>
   </head>
   <body>
 
@@ -96,100 +90,39 @@
       </div>
     </nav>
 
-
     <section class="section">
       <div class="container">
-        <h1 class="title">
-          <%= response2[0].title %>
-        </h1>
         <p class="subtitle">
-          by <%= response2[0].full_name %>
+          Articles trending on...
         </p>
+        <h1 class="title">
+          <u>Business Insider</u>
+        </h1>
       </div>
     </section>
 
-
-    <section class="hero is-large" style="background-image: url(<%= response2[0].image_url %>); background-repeat: no-repeat; background-size: cover;">
-      <div class="hero-body">
-
-      </div>
-    </section>
-
-    <br />
-    <br />
-
-    <div class="columns is-centered is-mobile">
-      <div class="column is-7-desktop is-10-mobile is-12-tablet">
-        <div>
-          <p class="subtitle">
-          <%= response2[0].content %>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="columns is-right is-mobile">
-      <div class="column is-4 is-offset-8">
-      <p class="subtitle"></p>
-      </div>
-    </div>
-
-    <hr style="margin-left: 15%; margin-right: 15%;">
-
-    <div class="columns is-mobile is-centered">
-      <div class="column is-7-desktop is-10-mobile is-12-tablet">
-        <article class="media">
-          <div class="media-content">
-            <form id="postComment">
-              <div class="field">
-                <p class="control">
-                  <textarea class="textarea" id="textarea" placeholder="Add a comment..." required></textarea>
-                </p>
-              </div>
-              <div class="field">
-                <p class="control">
-                  <input class="button is-primary" type="submit"></input>
-                </p>
-              </div>
-            </form>
-          </div>
-        </article>
-      </div>
-    </div>
-
-    <div class="columns is-mobile is-centered">
-      <div class="column is-7-desktop is-10-mobile is-12-tablet" id="commentGoesHere">
-        <% if (response2[0].comment_id) {%>
-          <% for (var i = 0; i < response2.length; i++) { %>
-            <article class="media">
-              <div class="media-content">
-                <div class="content">
-                  <p>
-                    <% if (response2[i].commenter_id) { %>
-                      <strong id="commenterName"><%= response2[i].commenter_name %></strong>
-                    <% } else { %>
-                      <strong id="commenterName">Anonymous</strong>
-                    <% } %>
-                    <br id="commentText">
-                    <%= response2[i].description %>
-                    <br>
-                    <small id="commentTime"><%= response2[i].date_created.toDateString() %></small>
-                  </p>
+    <section class="section">
+      <% for (var i = 0; i < data.length; i++) { %>
+        <div class="column">
+          <div class="column is-two-thirds-desktop is-7-mobile">
+            <a href="<%=data[i].url%>" target="_blank">
+              <section class="hero is-primary is-medium" style="background-image: url('<%= data[i].urlToImage %>'); background-repeat: no-repeat; background-size: cover;">
+                <div class="hero-body">
+                  <div class="container">
+                    <h2 class="subtitle">
+                      <strong><%= data[i].title %></strong>
+                    </h2>
+                    <p class="subtitle">
+                      <%= data[i].description %>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </article>
-          <% } %>
-        <% } else {%>
-
-        <% } %>
-      </div>
-    </div>
-
-
-    <br />
-    <br />
-    <br />
-
+              </section>
+            </a>
+          </div>
+        </div>
+      <% } %>
+    </section>
 
     <footer class="footer">
       <div class="container">
