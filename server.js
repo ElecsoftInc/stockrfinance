@@ -179,7 +179,7 @@ app.post('/signingUp', (req, res)=> {
   .then((response)=> {
     console.log('inside insert response', response)
     knex
-        .select('users_id')
+        .select('users_id', 'full_name')
         .from('users')
         .where({
           email: req.body.email
@@ -188,7 +188,7 @@ app.post('/signingUp', (req, res)=> {
           console.log('inside second then', response)
           req.session.userID = response[0].users_id;
           req.session.name = response[0].full_name;
-          console.log('session exists', req.session.userID)
+          console.log('session exists', req.session)
           res.redirect('/')
         })
   })
@@ -248,7 +248,26 @@ app.post('/submitArticle', upload.single('image') ,(req, res)=> {
           }])
       .then((response)=> {
         console.log('The article has been inserted', response)
-        res.redirect('/blog')
+        knex('posts')
+            .select('posts_id')
+            .where({
+              title: req.body.title
+            })
+        .then((response2)=> {
+          console.log('this should be the article_id', response2[0].posts_id)
+          knex('comments')
+              .insert([{
+                description: 'Thank you for contributing to our community!!',
+                article_id: response2[0].posts_id,
+                date_created: new Date,
+                commenter_id: null,
+                commenter_name: 'Stockr Finance'
+              }])
+          .then((response3)=> {
+            console.log('if you can see this, comment has been inserted. EVERYTHING SHOULD WORK NOW')
+            res.redirect('/blog')
+          })
+        })
       })
     });
   } else {
@@ -305,31 +324,21 @@ app.get('/blog', (req, res)=> {
 app.get('/article/:id', (req, res)=> {
   console.log('params', req.params)
   if(req.session.userID){
-      knex
-        .select('full_name')
-        .from('users')
-        .where({
-          users_id: req.session.userID
-        })
-      .then((response1)=> {
-        console.log('response', response1)
-        console.log('HELLLOOO name', response1[0].full_name)
-        knex('posts')
-          .join('users', 'posts.author_id', '=', 'users.users_id')
-          .join('comments', 'posts.posts_id', '=', 'comments.article_id', 'users.users_id', '=', 'comments.commenter_id')
-          .select('*')
-          .where({
-            posts_id: req.params.id
-          })
-        .then((response2)=> {
-          console.log('response2', response2)
-          var templateVariable = {
-            name: response1[0].full_name,
-            response2: response2
-          }
-          res.render('oneArticle', templateVariable);
-        })
+    knex('posts')
+      .join('users', 'posts.author_id', '=', 'users.users_id')
+      .join('comments', 'posts.posts_id', '=', 'comments.article_id', 'users.users_id', '=', 'comments.commenter_id')
+      .select('*')
+      .where({
+        posts_id: req.params.id
       })
+    .then((response2)=> {
+      console.log('response2', response2)
+      var templateVariable = {
+        name: req.session.name,
+        response2: response2
+      }
+      res.render('oneArticle', templateVariable);
+    })
   } else {
     knex('posts')
       .join('users', 'posts.author_id', '=', 'users.users_id')
@@ -523,6 +532,7 @@ app.get('/businessInsider', (req, res)=> {
 
 app.get('/economist', (req, res)=> {
   if(req.session.userID){
+    console.log('LOOOK HERE,', req.session)
     var url = 'http://newsapi.org/v1/articles?source=the-economist&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
     //using http to get the json object
     var object = '';
