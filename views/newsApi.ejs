@@ -6,6 +6,7 @@
     <title>Hello Bulma!</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
   </head>
   <body>
 
@@ -51,6 +52,30 @@
               </a>
               <a class="navbar-item " href="/economist">
                 The Economist
+              </a>
+              <a class="navbar-item " href="/bloomberg">
+                Bloomberg
+              </a>
+              <a class="navbar-item " href="/fortune">
+                Fortune
+              </a>
+              <a class="navbar-item " href="/nytimes">
+                New York Times
+              </a>
+              <a class="navbar-item " href="/cnbc">
+                CNBC
+              </a>
+              <a class="navbar-item " href="/aljazeera">
+                Aljazeera
+              </a>
+              <a class="navbar-item " href="/google">
+                Google News
+              </a>
+              <a class="navbar-item " href="/reuters">
+                Reuters
+              </a>
+              <a class="navbar-item " href="/toi">
+                The Times Of India
               </a>
             </div>
           </div>
@@ -98,7 +123,7 @@
           Articles trending on...
         </p>
         <h1 class="title">
-          <u>The Wall Street Journal</u>
+          <u><%= sourceName %></u>
         </h1>
       </div>
     </section>
@@ -106,14 +131,13 @@
     <section class="section">
 
       <% for (var i = 0; i < data.length; i++) { %>
-                  <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
-
+        <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
           <div class="column is-6-desktop">
             <div class="card">
               <a href="<%=data[i].url%>" target="_blank">
                 <div class="card-image">
                   <figure class="image is-4by3">
-                    <img src="<%= data[i].urlToImage %>" alt="Image">
+                    <img src="<%= data[i].urlToImage %>" alt="<%= data[i].title %>">
                   </figure>
                 </div>
               </a>
@@ -121,14 +145,12 @@
                 <div class="media">
                   <div class="media-content">
                     <p class="title is-4"><%= data[i].title %></p>
-                    <!-- <p class="subtitle is-6">@johnsmith</p> -->
-<!--                     <small><%= data[i].publishedAt %></small>
- -->                  </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-                        </div>
+        </div>
       <% } %>
 
 

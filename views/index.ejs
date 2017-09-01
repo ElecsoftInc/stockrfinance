@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
+    <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon"/> -->
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
@@ -61,6 +61,30 @@
               </a>
               <a class="navbar-item " href="/economist">
                 The Economist
+              </a>
+              <a class="navbar-item " href="/bloomberg">
+                Bloomberg
+              </a>
+              <a class="navbar-item " href="/fortune">
+                Fortune
+              </a>
+              <a class="navbar-item " href="/nytimes">
+                New York Times
+              </a>
+              <a class="navbar-item " href="/cnbc">
+                CNBC
+              </a>
+              <a class="navbar-item " href="/aljazeera">
+                Aljazeera
+              </a>
+              <a class="navbar-item " href="/google">
+                Google News
+              </a>
+              <a class="navbar-item " href="/reuters">
+                Reuters
+              </a>
+              <a class="navbar-item " href="/toi">
+                The Times Of India
               </a>
             </div>
           </div>
@@ -120,28 +144,30 @@
     <br />
 
     <section class="section">
-      <h1 class="title column is-offset-one-quarter-desktop" id="topStories">Today's top stories</h1>
+      <h1 class="title has-text-centered" id="topStories">Today's top stories</h1>
 
       <% if (response2[0]) { %>
         <% for (var i = 0; i < response2.length; i++) { %>
-          <div class="column">
-            <div class="column is-three-quarters-desktop is-7-mobile">
+        <div class="columns is-mobile is-centered">
+          <div class="column is-6-desktop">
+            <div class="card">
               <a href="/article/<%=response2[i].posts_id%>">
-                <section class="hero is-primary is-medium" style="background-image: url('<%= response2[i].image_url %>'); background-repeat: no-repeat; background-size: cover;">
-                  <div class="hero-body">
-                    <div class="container">
-                      <h1 class="title">
-                        <%= response2[i].title %>
-                      </h1>
-                      <h2 class="subtitle">
-                        <%= response2[i].content %>
-                      </h2>
-                    </div>
-                  </div>
-                </section>
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="<%= response2[i].image_url %>" alt="Image">
+                  </figure>
+                </div>
               </a>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4"><%= response2[i].title %></p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
         <% } %>
       <%} else if (response2){%>
         <h1 class="title column" id="noStories">No Stories trending right now. <a href="/login">Login</a> or <a href="/signup">Sign Up</a> and start writing one now!</h1>
