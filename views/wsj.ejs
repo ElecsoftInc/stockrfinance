@@ -15,16 +15,18 @@
           <strong>Stockr</strong>
         </a>
 
-        <a class="navbar-item is-hidden-desktop" href="https://github.com/jgthms/bulma">
-          <span class="icon" style="color: #333;">
-            <i class="fa fa-github"></i>
+        <a class="navbar-item is-hidden-desktop" href="/wsj">
+          <span class="icon">
+            <i class="fa fa-globe"></i>
           </span>
+          News
         </a>
 
-        <a class="navbar-item is-hidden-desktop" href="https://twitter.com/jgthms" target="_blank">
-          <span class="icon" style="color: #55acee;">
-            <i class="fa fa-twitter"></i>
+        <a class="navbar-item is-hidden-desktop" href="/blog">
+          <span class="icon">
+            <i class="fa fa-users"></i>
           </span>
+          Blog
         </a>
 
         <div class="navbar-burger burger" data-target="navMenuTransparentExample">
@@ -102,26 +104,34 @@
     </section>
 
     <section class="section">
+
       <% for (var i = 0; i < data.length; i++) { %>
-        <div class="column">
-          <div class="column is-two-thirds-desktop is-7-mobile">
-            <a href="<%=data[i].url%>" target="_blank">
-              <section class="hero is-primary is-medium" style="background-image: url('<%= data[i].urlToImage %>'); background-repeat: no-repeat; background-size: cover;">
-                <div class="hero-body">
-                  <div class="container">
-                    <h2 class="subtitle">
-                      <strong><%= data[i].title %></strong>
-                    </h2>
-                    <p class="subtitle">
-                      <%= data[i].description %>
-                    </p>
-                  </div>
+                  <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
+
+          <div class="column is-6-desktop">
+            <div class="card">
+              <a href="<%=data[i].url%>" target="_blank">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="<%= data[i].urlToImage %>" alt="Image">
+                  </figure>
                 </div>
-              </section>
-            </a>
+              </a>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4"><%= data[i].title %></p>
+                    <!-- <p class="subtitle is-6">@johnsmith</p> -->
+<!--                     <small><%= data[i].publishedAt %></small>
+ -->                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+                        </div>
       <% } %>
+
+
     </section>
 
     <footer class="footer">
