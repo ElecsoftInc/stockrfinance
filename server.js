@@ -114,7 +114,8 @@ app.get('/login', (req, res) => {
 })
 
 // Posting login form. Selects * from db where email = email typed in by user.
-// Compares password in db to password entered, if passwords match, sets session to the user id.
+// Compares password in db to password entered, if passwords match, sets session to the user id and
+// also sets user name in session object for ease of use and redirects to home page.
 app.post('/loggingIn', (req, res)=> {
   console.log('req.body', req.body)
   console.log('password', req.body.password)
@@ -160,7 +161,8 @@ app.get('/signup', (req, res)=> {
 })
 
 // Sign up form posted. Information entered into database. Then,
-// id selected from db where email in db = email entered and then sets session to that id and redirects to home page
+// id selected from db where email in db = email entered and then sets session to that id
+// and also stores name in the session object for ease of use and redirects to home page
 app.post('/signingUp', (req, res)=> {
   console.log('req.body', req.body)
   console.log('time right now', Date.now())
@@ -198,30 +200,25 @@ app.post('/signingUp', (req, res)=> {
 // Selects name from db to display on the navbar and on the page
 app.get('/write', (req, res)=> {
   if(req.session.userID){
-    knex
-        .select('full_name')
-        .from('users')
-        .where({
-          users_id: req.session.userID
-        })
-    .then((response)=> {
-      console.log('response', response)
-      console.log('name', response[0].full_name)
-      var name = response[0].full_name.split(' ');
-      console.log('first name in array', name[0])
-      var templateVariable = {
-        name: name[0],
-        full_name: response[0].full_name
-      }
-      res.render('write', templateVariable)
-    })
+    console.log('name', req.session.name)
+    var name = req.session.name.split(' ');
+    console.log('first name in array', name[0])
+    var templateVariable = {
+      name: name[0],
+      full_name: response[0].full_name
+    }
+    res.render('write', templateVariable)
   } else {
     res.redirect('/')
   }
 })
 
-// Written article form submitted if session exists. Need to figure out how to handle image uploads.
-app.post('/submitArticle', upload.single('image') ,(req, res)=> {
+// Written article form submitted if session exists. Images uploaded from the front end are handled through multer.
+// Each image is uploaded to the uploads folder through multer. It is then accessed from there and uploaded to the cloud.
+// After the upload is successful, the file is deleted from the project directory and the content of the form,
+// with the image url are inserted into the db. Once the insert is successful, a comment is also added to the database
+// corresponding to the article id, so that it can be pulled out later to show the user that someone has read the post.
+app.post('/submitArticle', upload.single('image'), (req, res)=> {
   if (req.session.userID){
 
     console.log('BODY',req.body)
@@ -276,7 +273,7 @@ app.post('/submitArticle', upload.single('image') ,(req, res)=> {
 })
 
 // Blog page where all the articles are displayed. If session exists your name will also be
-// displayed on the navbar. Or else it wont. Articles need to be displayed on the blog page using id's.
+// displayed on the navbar. Or else it wont. Articles displayed on the blog page using id's.
 app.get('/blog', (req, res)=> {
   if(req.session.userID){
     knex
@@ -319,8 +316,8 @@ app.get('/blog', (req, res)=> {
 
 })
 
-// Get specific article page needs to be done through ids.
-// Comments also need to be selected acc to article id.
+// Get specific article page depending on which one is clicked.
+// Comments also selected to be displayed on the article page.
 app.get('/article/:id', (req, res)=> {
   console.log('params', req.params)
   if(req.session.userID){
@@ -358,7 +355,9 @@ app.get('/article/:id', (req, res)=> {
   }
 })
 
-// Comment entered on specific article entered into database. Need detailed explanation
+// Comment entered on specific article entered into database. If session exists, your name will be entered into db.
+// If no session, name in db will be null. After comment entered into db, it is also selected from the db,
+// and sent to the front end in JSON format to be displayed on the article page. Look at comments.js for more.
 app.post('/postComment', (req, res)=> {
   console.log("Yaha dekh ",req.body)
   if (req.session.userID) {
@@ -401,12 +400,19 @@ app.post('/postComment', (req, res)=> {
   }
 })
 
-//var http = require ('http');
+/*************  NEWS API CALL FROM HERE ON OUT  *************/
+
+// All api calls are basically the same. The only thing that changes is the source in the url.
+// Using http to get json from the api and sending data to the front end to be able to iterate over and display.
 
 app.get('/wsj', (req, res)=> {
   if(req.session.userID){
     console.log('session exists', req.session.name)
-    var url = 'http://newsapi.org/v1/articles?source=the-wall-street-journal&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?' +
+              'source=the-wall-street-journal&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -436,7 +442,11 @@ app.get('/wsj', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=the-wall-street-journal&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?' +
+              'source=the-wall-street-journal&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -471,7 +481,11 @@ app.get('/wsj', (req, res)=> {
 
 app.get('/businessInsider', (req, res)=> {
   if(req.session.userID){
-    var url = 'http://newsapi.org/v1/articles?source=business-insider&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=business-insider&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -501,7 +515,11 @@ app.get('/businessInsider', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=business-insider&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=business-insider&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -537,7 +555,11 @@ app.get('/businessInsider', (req, res)=> {
 app.get('/economist', (req, res)=> {
   if(req.session.userID){
     console.log('LOOOK HERE,', req.session)
-    var url = 'http://newsapi.org/v1/articles?source=the-economist&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=the-economist&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -567,7 +589,11 @@ app.get('/economist', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=the-economist&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=the-economist&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -603,7 +629,11 @@ app.get('/economist', (req, res)=> {
 app.get('/bloomberg', (req, res)=> {
   if(req.session.userID){
     console.log('LOOOK HERE,', req.session)
-    var url = 'http://newsapi.org/v1/articles?source=bloomberg&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=bloomberg&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -633,7 +663,11 @@ app.get('/bloomberg', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=bloomberg&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=bloomberg&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -669,7 +703,11 @@ app.get('/bloomberg', (req, res)=> {
 app.get('/fortune', (req, res)=> {
   if(req.session.userID){
     console.log('LOOOK HERE,', req.session)
-    var url = 'http://newsapi.org/v1/articles?source=fortune&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=fortune&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -699,7 +737,11 @@ app.get('/fortune', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=fortune&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+        var url = 'http://newsapi.org/v1/articles?'+
+                  'source=fortune&'+
+                  'sortBy=top&'+
+                  'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -735,7 +777,11 @@ app.get('/fortune', (req, res)=> {
 app.get('/nytimes', (req, res)=> {
   if(req.session.userID){
     console.log('LOOOK HERE,', req.session)
-    var url = 'http://newsapi.org/v1/articles?source=the-new-york-times&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=the-new-york-times&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -765,7 +811,11 @@ app.get('/nytimes', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=the-new-york-times&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=the-new-york-times&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -800,7 +850,11 @@ app.get('/nytimes', (req, res)=> {
 app.get('/cnbc', (req, res)=> {
   if(req.session.userID){
     console.log('LOOOK HERE,', req.session)
-    var url = 'http://newsapi.org/v1/articles?source=cnbc&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=cnbc&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -830,7 +884,11 @@ app.get('/cnbc', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=cnbc&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=cnbc&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -865,7 +923,11 @@ app.get('/cnbc', (req, res)=> {
 app.get('/aljazeera', (req, res)=> {
   if(req.session.userID){
     console.log('LOOOK HERE,', req.session)
-    var url = 'http://newsapi.org/v1/articles?source=al-jazeera-english&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=al-jazeera-english&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -895,7 +957,11 @@ app.get('/aljazeera', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=al-jazeera-english&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+          'source=al-jazeera-english&'+
+          'sortBy=top&'+
+          'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -930,7 +996,11 @@ app.get('/aljazeera', (req, res)=> {
 app.get('/google', (req, res)=> {
   if(req.session.userID){
     console.log('LOOOK HERE,', req.session)
-    var url = 'http://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=google-news&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -960,7 +1030,11 @@ app.get('/google', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=google-news&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -995,7 +1069,11 @@ app.get('/google', (req, res)=> {
 app.get('/toi', (req, res)=> {
   if(req.session.userID){
     console.log('LOOOK HERE,', req.session)
-    var url = 'http://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=the-times-of-india&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -1025,7 +1103,11 @@ app.get('/toi', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=the-times-of-india&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -1060,7 +1142,11 @@ app.get('/toi', (req, res)=> {
 app.get('/reuters', (req, res)=> {
   if(req.session.userID){
     console.log('LOOOK HERE,', req.session)
-    var url = 'http://newsapi.org/v1/articles?source=reuters&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=reuters&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
@@ -1090,7 +1176,11 @@ app.get('/reuters', (req, res)=> {
       console.log('got an error', e)
     })
   } else {
-    var url = 'http://newsapi.org/v1/articles?source=reuters&sortBy=top&apiKey=f43f221fbd094da99409fcabf4ff0de2';
+    var url = 'http://newsapi.org/v1/articles?'+
+              'source=reuters&'+
+              'sortBy=top&'+
+              'apiKey=f43f221fbd094da99409fcabf4ff0de2';
+
     //using http to get the json object
     var object = '';
 
