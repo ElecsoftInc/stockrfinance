@@ -79,30 +79,103 @@ app.get("/", (req, res) => {
           .limit(3)
       .then((response2)=> {
         console.log('second response', response2)
-        var templateVariable = {
-          name: response[0].full_name,
-          user: req.session.userID,
-          response2: response2
-        }
-        res.render("index", templateVariable);
+        var apiArray = ['the-wall-street-journal', 'business-insider', 'the-economist', 'bloomberg', 'fortune', 'the-new-york-times', 'cnbc', 'al-jazeera-english', 'google-news', 'reuters', 'the-times-of-india'];
+        var randomSource = apiArray[Math.floor(Math.random() * (apiArray.length + 1))];
+        console.log('RANDOM SOURCE:::', randomSource)
+
+        var url = `http://newsapi.org/v1/articles?` +
+                `source=${randomSource}&`+
+                `sortBy=top&`+
+                `apiKey=f43f221fbd094da99409fcabf4ff0de2`;
+
+        //using http to get the json object
+        var object = '';
+
+        var data;
+        http.get(url, function(response){
+          // var object = '';
+
+          response.on('data', (chunk)=> {
+            object += chunk;
+            //var data = JSON.parse(object);
+            //console.log("right here buddy",data)
+          })
+
+          response.on('end', function(){
+            data = JSON.parse(object);
+            console.log("Got a response: ", data);
+            console.log('length',data.articles.length)
+            var templateVariable = {
+              data: data.articles,
+              name: req.session.name,
+              user: req.session.userID,
+              response2: response2
+            }
+            res.render('index', templateVariable)
+          });
+        }).on('error', (e)=>{
+          console.log('got an error', e)
+        })
+        // var templateVariable = {
+        //   name: response[0].full_name,
+        //   user: req.session.userID,
+        //   response2: response2
+        // }
+        // res.render("index", templateVariable);
       })
     })
   } else {
     knex('posts')
         .select('*')
         .orderBy('date_written', 'desc')
-        .limit(3)
+        .limit(2)
     .then((response2)=> {
       console.log('response2', response2)
-      var templateVariable = {
-        name: null,
-        user: null,
-        response2: response2
-      }
-      res.render('index', templateVariable);
+      var apiArray = ['the-wall-street-journal', 'business-insider', 'the-economist', 'bloomberg', 'fortune', 'the-new-york-times', 'cnbc', 'al-jazeera-english', 'google-news', 'reuters', 'the-times-of-india'];
+      var randomSource = apiArray[Math.floor(Math.random() * (apiArray.length + 1))];
+      console.log('RANDOM SOURCE:::', randomSource)
+
+      var url = `http://newsapi.org/v1/articles?` +
+              `source=${randomSource}&`+
+              `sortBy=top&`+
+              `apiKey=f43f221fbd094da99409fcabf4ff0de2`;
+
+      //using http to get the json object
+      var object = '';
+
+      var data;
+      http.get(url, function(response){
+        // var object = '';
+
+        response.on('data', (chunk)=> {
+          object += chunk;
+          //var data = JSON.parse(object);
+          //console.log("right here buddy",data)
+        })
+
+        response.on('end', function(){
+          data = JSON.parse(object);
+          console.log("Got a response: ", data);
+          console.log('length', data.articles.length)
+          var templateVariable = {
+            data: data.articles,
+            name: null,
+            user: null,
+            response2: response2
+          }
+          res.render('index', templateVariable)
+        });
+      }).on('error', (e)=>{
+        console.log('got an error', e)
+      })
     })
   }
 });
+
+app.post('/hello', (req, res)=> {
+  console.log('YOYOYOYOYO', req.body)
+})
+
 
 //Login Page. If session exists, autmatic redirect to home page.
 app.get('/login', (req, res) => {
@@ -205,7 +278,7 @@ app.get('/write', (req, res)=> {
     console.log('first name in array', name[0])
     var templateVariable = {
       name: name[0],
-      full_name: response[0].full_name
+      full_name: req.session.name
     }
     res.render('write', templateVariable)
   } else {
@@ -222,6 +295,7 @@ app.post('/submitArticle', upload.single('image'), (req, res)=> {
   if (req.session.userID){
 
     console.log('BODY',req.body)
+    console.log('req.body.story', req.body.story)
     console.log('file',req.file)
     console.log('filename', req.file.filename)
 
@@ -289,11 +363,13 @@ app.get('/blog', (req, res)=> {
           .join('users', 'posts.author_id', '=', 'users.users_id')
           .select('*')
       .then((response2)=> {
-        console.log('response2', response2)
-        console.log('is response1 still available???', response1)
+        // console.log('response2', response2)
+        // console.log("REVERSED hopefully this works", response2.reverse())
+        // console.log('is response1 still available???', response1)
+        var newResponse = response2.reverse();
         var templateVariable = {
           name: response1[0].full_name,
-          response2: response2
+          response2: newResponse
         }
         res.render('blog', templateVariable);
       })
@@ -303,11 +379,14 @@ app.get('/blog', (req, res)=> {
       .join('users', 'posts.author_id', '=', 'users.users_id')
       .select('*')
     .then((response)=> {
-      console.log('response when user does not exist', response)
+      // console.log('response when user does not exist', response)
+      //console.log("REVERSED hopefully this works", response.reverse())
+      var newResponse = response.reverse();
+      console.log('newResponse', newResponse)
       //console.log('is response1 still available???', response1)
       var templateVariable = {
         name: null,
-        response: response
+        response: newResponse
       }
       res.render('blog', templateVariable);
     })
@@ -330,9 +409,12 @@ app.get('/article/:id', (req, res)=> {
       })
     .then((response2)=> {
       console.log('response2', response2)
+      var firstLines = response2[0].content.split('.');
+      console.log("LOOOOK", firstLines)
       var templateVariable = {
         name: req.session.name,
-        response2: response2
+        response2: response2,
+        firstLines: firstLines
       }
       res.render('oneArticle', templateVariable);
     })
@@ -346,9 +428,12 @@ app.get('/article/:id', (req, res)=> {
       })
     .then((response2)=> {
       console.log('response', response2)
+      var firstLines = response2[0].content.split('.');
+      console.log("LOOOOK", firstLines)
       var templateVariable = {
         name: null,
-        response2: response2
+        response2: response2,
+        firstLines: firstLines
       }
       res.render('oneArticle', templateVariable);
     })

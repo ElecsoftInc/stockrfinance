@@ -115,28 +115,75 @@
     </section>
 
     <section class="section">
-
+    <% var m = 0; %>
       <% for (var i = 0; i < data.length; i++) { %>
-        <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
-          <div class="column is-6-desktop">
-            <div class="card">
-              <a href="<%=data[i].url%>" target="_blank">
-                <div class="card-image">
-                  <figure class="image is-4by3">
-                    <img src="<%= data[i].urlToImage %>" alt="<%= data[i].title %>">
-                  </figure>
-                </div>
-              </a>
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-content">
-                    <p class="title is-4"><%= data[i].title %></p>
+        <% m++; %>
+        <%if (m == 3 || m == 6 || m == 9) {%>
+          <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
+            <div class="column is-6-desktop">
+              <div class="card">
+                <a href="" target="_blank">
+                  <div class="card-image">
+                    <figure class="THIS IS AN AD NIGGA">
+                    </figure>
+                  </div>
+                </a>
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-content">
+                      <p class="title is-4">THIS IS AN AD buddy</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+
+          <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
+            <div class="column is-6-desktop">
+              <div class="card">
+                <a href="<%=data[i].url%>" target="_blank">
+                  <div class="card-image">
+                    <figure class="image is-3by3">
+                      <img src="<%= data[i].urlToImage %>" alt="<%= data[i].title %>">
+                    </figure>
+                  </div>
+                </a>
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-content">
+                      <p class="title is-4"><%= data[i].title %></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <% } else {%>
+          <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
+            <div class="column is-6-desktop">
+              <div class="card">
+                <a href="<%=data[i].url%>" target="_blank">
+                  <div class="card-image">
+                    <figure class="image is-3by3">
+                      <img src="<%= data[i].urlToImage %>" alt="<%= data[i].title %>">
+                    </figure>
+                  </div>
+                </a>
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-content">
+                      <p class="title is-4"><%= data[i].title %></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+
+
       <% } %>
 
 

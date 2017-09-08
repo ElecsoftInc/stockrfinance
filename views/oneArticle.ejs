@@ -121,11 +121,25 @@
     </section>
 
 
-    <section class="hero is-large" style="background-image: url(<%= response2[0].image_url %>); background-repeat: no-repeat; background-size: cover;">
-      <div class="hero-body">
+    <div class="columns is-mobile is-centered">
+    <div class="column is-6">
+      <p class="subtitle">
+        <%= firstLines %>
+      </p>
+    </div>
+    </div>
 
-      </div>
-    </section>
+
+<!--           <p class="title">Middle box</p>
+          <p class="subtitle">With an image</p> -->
+          <div class="columns is-centered is-mobile">
+          <div class="column is-7">
+          <figure class="image is-3by3">
+            <img src="<%= response2[0].image_url %>">
+          </figure>
+          </div>
+</div>
+
 
     <br />
     <br />

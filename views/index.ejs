@@ -3,18 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="./favicon.png" type="img/x-icon">
     <title>Stockr Finance ~ Home Page</title>
-
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
-    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
     <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon"/> -->
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
-<!--     <script src='./node_modules/free-text/src/index.js'></script> -->
-<!--     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.5/typed.min.js"></script> -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani:400" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.bootcss.com/typed.js/1.1.4/typed.min.js"></script>
   </head>
@@ -129,6 +126,29 @@
     <section class="section">
       <h1 class="title has-text-centered" id="topStories">Today's top stories</h1>
 
+      <% if (data[0]) { %>
+        <div class="columns is-mobile is-centered">
+          <div class="column is-6-desktop">
+            <div class="card">
+              <a href="/article/<%=data[0].url%>">
+                <div class="card-image">
+                  <figure class="image is-3by3">
+                    <img src="<%= data[0].urlToImage %>" alt="Image">
+                  </figure>
+                </div>
+              </a>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4"><%= data[0].title %></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+
       <% if (response2[0]) { %>
         <% for (var i = 0; i < response2.length; i++) { %>
         <div class="columns is-mobile is-centered">
@@ -136,7 +156,7 @@
             <div class="card">
               <a href="/article/<%=response2[i].posts_id%>">
                 <div class="card-image">
-                  <figure class="image is-4by3">
+                  <figure class="image is-3by3">
                     <img src="<%= response2[i].image_url %>" alt="Image">
                   </figure>
                 </div>
