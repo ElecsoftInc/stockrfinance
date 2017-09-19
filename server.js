@@ -80,7 +80,7 @@ app.get("/", (req, res) => {
       .then((response2)=> {
         console.log('second response', response2)
         var apiArray = ['the-wall-street-journal', 'business-insider', 'the-economist', 'bloomberg', 'fortune', 'the-new-york-times', 'cnbc', 'al-jazeera-english', 'google-news', 'reuters', 'the-times-of-india'];
-        var randomSource = apiArray[Math.floor(Math.random() * (apiArray.length + 1))];
+        var randomSource = apiArray[Math.floor(Math.random() * 11)];
         console.log('RANDOM SOURCE:::', randomSource)
 
         var url = `http://newsapi.org/v1/articles?` +

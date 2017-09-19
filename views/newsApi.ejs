@@ -120,7 +120,7 @@
       <% for (var i = 0; i < data.length; i++) { %>
         <% m++; %>
         <%if (m == 3 || m == 6 || m == 9) {%>
-          <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
+          <div class="columns is-mobile is-centered">
             <div class="column is-6-desktop">
               <div class="card">
                 <a href="" target="_blank">
@@ -140,7 +140,7 @@
             </div>
           </div>
 
-          <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
+          <div class="columns is-mobile is-centered">
             <div class="column is-6-desktop">
               <div class="card">
                 <a href="<%=data[i].url%>" target="_blank">
@@ -162,7 +162,7 @@
           </div>
 
         <% } else {%>
-          <div class="columns is-mobile is-centered" style="overflow-x: scroll;">
+          <div class="columns is-mobile is-centered">
             <div class="column is-6-desktop">
               <div class="card">
                 <a href="<%=data[i].url%>" target="_blank">
